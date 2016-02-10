@@ -45,7 +45,7 @@ Just drag and drop the `.swift` files in the `UDPBroadcastConnection` folder int
 
 ## License
 
-`UDPBroadcastConnection` is available under the MIT license. See the [LICENSE](https://github.com/gunterhager/UDPBroadcastConnection/blob/master/LICENSE.md) file for details.
+`UDPBroadcastConnection` is available under the MIT license. See the [LICENSE](https://github.com/gunterhager/UDPBroadcastConnection/blob/master/LICENSE) file for details.
 
 
 Made with ❤ at [all about apps](https://www.allaboutapps.at).
