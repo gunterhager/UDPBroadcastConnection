@@ -8,7 +8,7 @@ Framework to send UDP broadcast messages and listen to responses using a [Grand 
 
 ## Requirements
 
-iOS 9.0+, Swift 2
+iOS 9.3+, Swift 2.3
 
 ## Usage
 
