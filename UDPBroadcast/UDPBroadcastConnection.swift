@@ -84,10 +84,7 @@ public class UDPBroadcastConnection {
         setNoSigPipe(newSocket)
         
         // Set up a dispatch source
-        guard let newResponseSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_READ, UInt(newSocket), 0, dispatch_get_main_queue()) else {
-            close(newSocket)
-            return false
-        }
+        let newResponseSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_READ, UInt(newSocket), 0, dispatch_get_main_queue())
         
         // Set up cancel handler
         dispatch_source_set_cancel_handler(newResponseSource) {
