@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     }
 
 
-    @IBAction func reload(sender: AnyObject) {
+    @IBAction func reload(_ sender: AnyObject) {
         self.logView.text = ""
         broadcastConnection.sendBroadcast(Config.Strings.broadcastMessage)
     }

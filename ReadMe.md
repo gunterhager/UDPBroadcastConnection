@@ -1,14 +1,15 @@
 # UDPBroadcastConnection
 
-<img src="https://img.shields.io/badge/Platform-iOS%209%9B-blue.svg" alt="Platform iOS9+">
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/Language-Swift%202-orange.svg" alt="Language: Swift 2" /></a>
+<img src="https://img.shields.io/badge/Platform-iOS 10-blue.svg" alt="Platform iOS10+">
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/Language-Swift 3-orange.svg" alt="Language: Swift 3.0" /></a>
+
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-brightgreen.svg" alt="Carthage compatible" /></a>
 
-Framework to send UDP broadcast messages and listen to responses using a [Grand Central Dispatch](http://developer.apple.com/mac/library/documentation/Performance/Reference/GCD_libdispatch_Ref/Reference/reference.html) dispatch source.
+Framework to send UDP broadcast messages and listen to responses using a [Dispatch](https://developer.apple.com/reference/dispatch) dispatch source.
 
 ## Requirements
 
-iOS 9.0+, Swift 2
+iOS 10.0+, Swift 3.0
 
 ## Usage
 

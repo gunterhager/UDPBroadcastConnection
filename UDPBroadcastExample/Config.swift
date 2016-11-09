@@ -15,7 +15,7 @@ struct Config {
     }
     
     struct Ports {
-        static let broadcast = UInt16(35602)
+        static let broadcast = UInt16(35601)
     }
         
 }
