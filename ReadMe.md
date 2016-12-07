@@ -9,7 +9,7 @@ Framework to send UDP broadcast messages and listen to responses using a [Dispat
 
 ## Requirements
 
-iOS 10.0+, Swift 3.0
+iOS 9.3+, Swift 3.0
 
 ## Usage
 
