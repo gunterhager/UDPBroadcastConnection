@@ -17,9 +17,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        broadcastConnection = UDPBroadcastConnection(port: Config.Ports.broadcast) { [unowned self] (response: (ipAddress: String, port: Int, response: [UInt8])) -> Void in
-            let log = "Received from \(response.ipAddress):\(response.port):\n\n\(response.response)"
+        
+        broadcastConnection = UDPBroadcastConnection(port: Config.Ports.broadcast) { [unowned self] (ipAddress: String, port: Int, response: [UInt8]) -> Void in
+            let log = "Received from \(ipAddress):\(port):\n\n\(response)"
             self.logView.text = log
         }
     }
