@@ -147,6 +147,14 @@ open class UDPBroadcastConnection {
      */
     open func sendBroadcast(_ message: String) {
         
+        guard let data = message.data(using: .utf8) else { return }
+        sendBroadcast(data)
+    }
+    
+    /// Send broadcast data.
+    ///
+    /// - Parameter data: Data to send via broadcast.
+    open func sendBroadcast(_ data: Data) {
         if responseSource == nil {
             guard createSocket() else {
                 print("UDP ServerConnection initialization failed.")
@@ -157,8 +165,8 @@ open class UDPBroadcastConnection {
         guard let source = responseSource else { return }
         let UDPSocket = Int32(source.handle)
         let socketLength = socklen_t(address.sin_len)
-        message.withCString { broadcastMessage in
-            let broadcastMessageLength = Int(strlen(broadcastMessage) + 1) // We need to include the 0 byte to terminate the C-String
+        data.withUnsafeBytes { (broadcastMessage: UnsafePointer<Int8>) in
+            let broadcastMessageLength = data.count
             let sent = withUnsafeMutablePointer(to: &address) { pointer -> Int in
                 let memory = UnsafeRawPointer(pointer).bindMemory(to: sockaddr.self, capacity: 1)
                 return sendto(UDPSocket, broadcastMessage, broadcastMessageLength, 0, memory, socketLength)
