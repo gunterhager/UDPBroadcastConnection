@@ -50,13 +50,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6EB46EA82141837E001C65D5 /* UDPBroadcast_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EB46EA82141837E001C65D5 /* UDPBroadcast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB46EAA2141837E001C65D5 /* UDPBroadcast_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPBroadcast_tvOS.h; sourceTree = "<group>"; };
 		6EB46EAB2141837E001C65D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6EB46EB6214183B2001C65D5 /* UDPBroadcast_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EB46EB6214183B2001C65D5 /* UDPBroadcast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB46EB8214183B2001C65D5 /* UDPBroadcast_macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPBroadcast_macOS.h; sourceTree = "<group>"; };
 		6EB46EB9214183B2001C65D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6EB46ED221418407001C65D5 /* UDPBroadcast_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EB46ED221418407001C65D5 /* UDPBroadcast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB46ED421418407001C65D5 /* UDPBroadcast_watchOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPBroadcast_watchOS.h; sourceTree = "<group>"; };
 		6EB46ED521418407001C65D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC87C7621C6B443A00B940F5 /* UDPBroadcast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UDPBroadcast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,9 +161,9 @@
 			children = (
 				BC87C7621C6B443A00B940F5 /* UDPBroadcast.framework */,
 				BC87C7711C6B448A00B940F5 /* UDPBroadcastExample.app */,
-				6EB46EA82141837E001C65D5 /* UDPBroadcast_tvOS.framework */,
-				6EB46EB6214183B2001C65D5 /* UDPBroadcast_macOS.framework */,
-				6EB46ED221418407001C65D5 /* UDPBroadcast_watchOS.framework */,
+				6EB46EA82141837E001C65D5 /* UDPBroadcast.framework */,
+				6EB46EB6214183B2001C65D5 /* UDPBroadcast.framework */,
+				6EB46ED221418407001C65D5 /* UDPBroadcast.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -245,7 +245,7 @@
 			);
 			name = "UDPBroadcast tvOS";
 			productName = "UDPBroadcast tvOS";
-			productReference = 6EB46EA82141837E001C65D5 /* UDPBroadcast_tvOS.framework */;
+			productReference = 6EB46EA82141837E001C65D5 /* UDPBroadcast.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		6EB46EB5214183B2001C65D5 /* UDPBroadcast macOS */ = {
@@ -263,7 +263,7 @@
 			);
 			name = "UDPBroadcast macOS";
 			productName = "UDPBroadcast macOS";
-			productReference = 6EB46EB6214183B2001C65D5 /* UDPBroadcast_macOS.framework */;
+			productReference = 6EB46EB6214183B2001C65D5 /* UDPBroadcast.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		6EB46ED121418407001C65D5 /* UDPBroadcast watchOS */ = {
@@ -281,7 +281,7 @@
 			);
 			name = "UDPBroadcast watchOS";
 			productName = "UDPBroadcast watchOS";
-			productReference = 6EB46ED221418407001C65D5 /* UDPBroadcast_watchOS.framework */;
+			productReference = 6EB46ED221418407001C65D5 /* UDPBroadcast.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		BC87C7611C6B443A00B940F5 /* UDPBroadcast */ = {
@@ -514,7 +514,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -548,7 +548,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -584,7 +584,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -619,7 +619,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -651,7 +651,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-watchOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -686,7 +686,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-watchOS";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
