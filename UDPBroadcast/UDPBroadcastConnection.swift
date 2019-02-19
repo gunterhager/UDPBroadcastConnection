@@ -49,6 +49,7 @@ open class UDPBroadcastConnection {
         )
         
         self.handler = handler
+        _ = createSocket(bindIt: true)
     }
     
     deinit {
@@ -65,7 +66,7 @@ open class UDPBroadcastConnection {
      
      - returns: Returns true if the socket was created successfully.
      */
-    fileprivate func createSocket() -> Bool {
+    fileprivate func createSocket(bindIt: Bool = false) -> Bool {
         
         // Create new socket
         let newSocket: Int32 = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
@@ -78,6 +79,20 @@ open class UDPBroadcastConnection {
             print("Couldn't enable broadcast on socket")
             close(newSocket)
             return false
+        }
+        
+        if bindIt {
+            var saddr = sockaddr(sa_len: 0, sa_family: 0,
+                                 sa_data: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+            self.address.sin_addr = INADDR_ANY
+            memcpy(&saddr, &self.address, MemoryLayout<sockaddr_in>.size)
+            self.address.sin_addr = INADDR_BROADCAST
+            let binded = bind(newSocket, &saddr, socklen_t(MemoryLayout<sockaddr_in>.size))
+            if binded == -1 {
+                print("Couldn't bind socket")
+                close(newSocket)
+                return false
+            }
         }
         
         // Disable global SIGPIPE handler so that the app doesn't crash
