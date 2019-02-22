@@ -76,7 +76,7 @@ open class UDPBroadcastConnection {
         var broadcastEnable = Int32(1);
         let ret = setsockopt(newSocket, SOL_SOCKET, SO_BROADCAST, &broadcastEnable, socklen_t(MemoryLayout<UInt32>.size));
         if ret == -1 {
-            print("Couldn't enable broadcast on socket")
+            debugPrint("Couldn't enable broadcast on socket")
             close(newSocket)
             return false
         }
@@ -89,7 +89,7 @@ open class UDPBroadcastConnection {
             self.address.sin_addr = INADDR_BROADCAST
             let binded = bind(newSocket, &saddr, socklen_t(MemoryLayout<sockaddr_in>.size))
             if binded == -1 {
-                print("Couldn't bind socket")
+                debugPrint("Couldn't bind socket")
                 close(newSocket)
                 return false
             }
@@ -103,7 +103,7 @@ open class UDPBroadcastConnection {
         
         // Set up cancel handler
         newResponseSource.setCancelHandler {
-            print("Closing UDP socket")
+            debugPrint("Closing UDP socket")
             let UDPSocket = Int32(newResponseSource.handle)
             shutdown(UDPSocket, SHUT_RDWR)
             close(UDPSocket)
@@ -124,26 +124,26 @@ open class UDPBroadcastConnection {
             
             guard bytesRead >= 0 else {
                 if let errorString = String(validatingUTF8: strerror(errno)) {
-                    print("recvfrom failed: \(errorString)")
+                    debugPrint("recvfrom failed: \(errorString)")
                 }
                 self.closeConnection()
                 return
             }
             
             guard bytesRead > 0 else {
-                print("recvfrom returned EOF")
+                debugPrint("recvfrom returned EOF")
                 self.closeConnection()
                 return
             }
             
             guard let endpoint = withUnsafePointer(to: &socketAddress, { self.getEndpointFromSocketAddress(socketAddressPointer: UnsafeRawPointer($0).bindMemory(to: sockaddr.self, capacity: 1)) })
                 else {
-                    print("Failed to get the address and port from the socket address received from recvfrom")
+                    debugPrint("Failed to get the address and port from the socket address received from recvfrom")
                     self.closeConnection()
                     return
             }
             
-            print("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
+            debugPrint("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
             
             // Handle response
             self.handler?(endpoint.host, endpoint.port, response)
@@ -172,7 +172,7 @@ open class UDPBroadcastConnection {
     open func sendBroadcast(_ data: Data) {
         if responseSource == nil {
             guard createSocket() else {
-                print("UDP ServerConnection initialization failed.")
+                debugPrint("UDP ServerConnection initialization failed.")
                 return
             }
         }
@@ -189,7 +189,7 @@ open class UDPBroadcastConnection {
             
             guard sent > 0 else {
                 if let errorString = String(validatingUTF8: strerror(errno)) {
-                    print("UDP connection failed to send data: \(errorString)")
+                    debugPrint("UDP connection failed to send data: \(errorString)")
                 }
                 closeConnection()
                 return
@@ -197,7 +197,7 @@ open class UDPBroadcastConnection {
             
             if sent == broadcastMessageLength {
                 // Success
-                print("UDP connection sent \(broadcastMessageLength) bytes")
+                debugPrint("UDP connection sent \(broadcastMessageLength) bytes")
             }
         }
     }
@@ -205,10 +205,13 @@ open class UDPBroadcastConnection {
     /**
      Close the connection.
      */
-    open func closeConnection() {
+    open func closeConnection(_ reopen: Bool = true) {
         if let source = responseSource {
             source.cancel()
             responseSource = nil
+        }
+        DispatchQueue.main.async {
+            _ = self.createSocket(bindIt: true)
         }
     }
     
