@@ -29,6 +29,11 @@ open class UDPBroadcastConnection {
     /// A dispatch source for reading data from the UDP socket.
     var responseSource: DispatchSourceRead?
     
+    /// The dispatch queue to run responseSource & reconncetion on
+    var dispatchQueue: DispatchQueue = DispatchQueue.main
+    
+    /// Bind to port to start listening without first sending a message
+    var shouldBeBound: Bool = false
     
     // MARK: Initializers
     
@@ -39,7 +44,7 @@ open class UDPBroadcastConnection {
      
      - returns: Returns an initialized UDP broadcast connection.
      */
-    public init(port: UInt16, handler: ((_ ipAddress: String, _ port: Int, _ response: [UInt8]) -> Void)?) {
+    public init(port: UInt16, bindIt: Bool = false, handler: ((_ ipAddress: String, _ port: Int, _ response: [UInt8]) -> Void)?) {
         self.address = sockaddr_in(
             sin_len:    __uint8_t(MemoryLayout<sockaddr_in>.size),
             sin_family: sa_family_t(AF_INET),
@@ -49,7 +54,10 @@ open class UDPBroadcastConnection {
         )
         
         self.handler = handler
-        _ = createSocket(bindIt: true)
+        self.shouldBeBound = bindIt
+        if bindIt {
+            _ = createSocket()
+        }
     }
     
     deinit {
@@ -66,7 +74,7 @@ open class UDPBroadcastConnection {
      
      - returns: Returns true if the socket was created successfully.
      */
-    fileprivate func createSocket(bindIt: Bool = false) -> Bool {
+    fileprivate func createSocket() -> Bool {
         
         // Create new socket
         let newSocket: Int32 = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
@@ -81,14 +89,14 @@ open class UDPBroadcastConnection {
             return false
         }
         
-        if bindIt {
+        if shouldBeBound {
             var saddr = sockaddr(sa_len: 0, sa_family: 0,
                                  sa_data: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
             self.address.sin_addr = INADDR_ANY
             memcpy(&saddr, &self.address, MemoryLayout<sockaddr_in>.size)
             self.address.sin_addr = INADDR_BROADCAST
-            let binded = bind(newSocket, &saddr, socklen_t(MemoryLayout<sockaddr_in>.size))
-            if binded == -1 {
+            let isBound = bind(newSocket, &saddr, socklen_t(MemoryLayout<sockaddr_in>.size))
+            if isBound == -1 {
                 debugPrint("Couldn't bind socket")
                 close(newSocket)
                 return false
@@ -99,7 +107,7 @@ open class UDPBroadcastConnection {
         setNoSigPipe(socket: newSocket)
         
         // Set up a dispatch source
-        let newResponseSource = DispatchSource.makeReadSource(fileDescriptor: newSocket, queue: DispatchQueue.main)
+        let newResponseSource = DispatchSource.makeReadSource(fileDescriptor: newSocket, queue: dispatchQueue)
         
         // Set up cancel handler
         newResponseSource.setCancelHandler {
@@ -210,8 +218,10 @@ open class UDPBroadcastConnection {
             source.cancel()
             responseSource = nil
         }
-        DispatchQueue.main.async {
-            _ = self.createSocket(bindIt: true)
+        if shouldBeBound && reopen {
+            dispatchQueue.async {
+                _ = self.createSocket()
+            }
         }
     }
     
