@@ -1,7 +1,6 @@
 # UDPBroadcastConnection
 
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/Language-Swift 4-orange.svg" alt="Language: Swift 4.2" /></a>
-
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-brightgreen.svg" alt="Carthage compatible" /></a>
 
 Framework to send UDP broadcast messages and listen to responses using a [Dispatch](https://developer.apple.com/reference/dispatch) dispatch source.
