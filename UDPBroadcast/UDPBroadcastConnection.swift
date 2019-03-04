@@ -29,7 +29,7 @@ open class UDPBroadcastConnection {
     /// A dispatch source for reading data from the UDP socket.
     var responseSource: DispatchSourceRead?
     
-    /// The dispatch queue to run responseSource & reconncetion on
+    /// The dispatch queue to run responseSource & reconnection on
     var dispatchQueue: DispatchQueue = DispatchQueue.main
     
     /// Bind to port to start listening without first sending a message

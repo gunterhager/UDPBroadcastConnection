@@ -1,7 +1,6 @@
 # UDPBroadcastConnection
 
-<img src="https://img.shields.io/badge/Platform-iOS 11-blue.svg" alt="Platform iOS11+">
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/Language-Swift 4-orange.svg" alt="Language: Swift 4.0" /></a>
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/Language-Swift 4-orange.svg" alt="Language: Swift 4.2" /></a>
 
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-brightgreen.svg" alt="Carthage compatible" /></a>
 
@@ -9,7 +8,7 @@ Framework to send UDP broadcast messages and listen to responses using a [Dispat
 
 ## Requirements
 
-iOS 9.3+, Swift 4.0
+iOS 9.3+, Swift 4.2
 
 ## Usage
 
