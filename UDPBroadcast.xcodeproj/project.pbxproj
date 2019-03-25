@@ -23,6 +23,7 @@
 		BC87C7861C6B45E600B940F5 /* UDPBroadcast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC87C7621C6B443A00B940F5 /* UDPBroadcast.framework */; };
 		BC87C7871C6B45E600B940F5 /* UDPBroadcast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BC87C7621C6B443A00B940F5 /* UDPBroadcast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BC87C78C1C6B478800B940F5 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC87C78B1C6B478800B940F5 /* Config.swift */; };
+		BCFC10B92248D428003AB7FB /* UDPBroadcastConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC10B82248D428003AB7FB /* UDPBroadcastConnectionError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		BC87C78B1C6B478800B940F5 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		BC87C78D1C6B54AB00B940F5 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		BC87C78E1C6B5A2900B940F5 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BCFC10B82248D428003AB7FB /* UDPBroadcastConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPBroadcastConnectionError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,9 +173,10 @@
 		BC87C7641C6B443A00B940F5 /* UDPBroadcast */ = {
 			isa = PBXGroup;
 			children = (
+				BC87C7671C6B443A00B940F5 /* Info.plist */,
 				BC87C7651C6B443A00B940F5 /* UDPBroadcast.h */,
 				BC87C7831C6B450400B940F5 /* UDPBroadcastConnection.swift */,
-				BC87C7671C6B443A00B940F5 /* Info.plist */,
+				BCFC10B82248D428003AB7FB /* UDPBroadcastConnectionError.swift */,
 			);
 			path = UDPBroadcast;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCFC10B92248D428003AB7FB /* UDPBroadcastConnectionError.swift in Sources */,
 				BC87C7841C6B450400B940F5 /* UDPBroadcastConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
