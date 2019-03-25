@@ -18,12 +18,23 @@ An example app is included demonstrating UDPBroadcastConnection's functionality.
 Create a `UDPBroadcastConnection` on port `35602` with a closure that handles the response:
 
 ```swift
-broadcastConnection = UDPBroadcastConnection(port: 35602) { [unowned self] (response: (ipAddress: String, port: Int, response: [UInt8])) -> Void in
+broadcastConnection = try UDPBroadcastConnection(
+  port: 35602,
+  handler: { (response: (ipAddress: String, port: Int, response: [UInt8])) -> Void in
     print("Received from \(response.ipAddress):\(response.port):\n\n\(response.response)")
-}
+	},
+  errorHandler: { (error) in 
+    print(error)
+  })
 ```
 
-Note: Make sure to keep a strong reference to `broadcastConnection` (e.g. by storing it in a property).
+Note: Make sure to keep a strong reference to `broadcastConnection` (e.g. by storing it in a property) to be able to receive responses.
+
+Send a message via broadcast:
+
+```swift
+try broadcastConnection.sendBroadcast("This is a test!")
+```
 
 
 ## Installation

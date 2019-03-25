@@ -221,9 +221,6 @@ open class UDPBroadcastConnection {
         }
     }
     
-    /**
-     Close the connection.
-     */
     /// Close the connection.
     ///
     /// - Parameter reopen: Automatically reopens the connection if true. Defaults to true.
