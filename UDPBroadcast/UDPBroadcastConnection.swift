@@ -24,7 +24,7 @@ open class UDPBroadcastConnection {
     var address: sockaddr_in
     
     /// Type of a closure that handles incoming UDP packets.
-    public typealias ReceiveHandler = (_ ipAddress: String, _ port: Int, _ response: [UInt8]) -> Void
+    public typealias ReceiveHandler = (_ ipAddress: String, _ port: Int, _ response: Data) -> Void
     /// Closure that handles incoming UDP packets.
     var handler: ReceiveHandler?
     
@@ -163,8 +163,10 @@ open class UDPBroadcastConnection {
                 
                 debugPrint("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
                 
+                let responseBytes = Data(response[0..<bytesRead])
+                
                 // Handle response
-                self.handler?(endpoint.host, endpoint.port, response)
+                self.handler?(endpoint.host, endpoint.port, responseBytes)
             } catch {
                 if let error = error as? ConnectionError {
                     self.errorHandler?(error)

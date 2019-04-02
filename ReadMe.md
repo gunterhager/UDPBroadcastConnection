@@ -36,6 +36,9 @@ Send a message via broadcast:
 try broadcastConnection.sendBroadcast("This is a test!")
 ```
 
+### Try it out
+
+You can test the broadcast and the handler for receiving messages by running the included `receive_and_reply.py`  script (tested with Python 2.7.10) on your Mac. If you send a broadcast with the example app, you should see the message that was sent in the terminal and see the script's answer in the example app.
 
 ## Installation
 

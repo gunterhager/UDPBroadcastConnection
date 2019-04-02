@@ -11,7 +11,7 @@ import Foundation
 struct Config {
     
     struct Strings {
-        static let broadcastMessage = "get services"
+        static let broadcastMessage = "Hello!"
     }
     
     struct Ports {
