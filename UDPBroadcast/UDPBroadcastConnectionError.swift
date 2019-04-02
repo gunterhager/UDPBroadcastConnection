@@ -10,7 +10,7 @@ import Foundation
 
 public extension UDPBroadcastConnection {
     
-    public enum ConnectionError: Error {
+    enum ConnectionError: Error {
         // Creating socket
         case createSocketFailed
         case enableBroadcastFailed
