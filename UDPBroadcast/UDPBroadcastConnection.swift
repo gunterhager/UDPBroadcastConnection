@@ -199,11 +199,11 @@ open class UDPBroadcastConnection {
         guard let source = responseSource else { return }
         let UDPSocket = Int32(source.handle)
         let socketLength = socklen_t(address.sin_len)
-        try data.withUnsafeBytes { (broadcastMessage: UnsafePointer<Int8>) in
+        try data.withUnsafeBytes { (broadcastMessage) in
             let broadcastMessageLength = data.count
             let sent = withUnsafeMutablePointer(to: &address) { pointer -> Int in
                 let memory = UnsafeRawPointer(pointer).bindMemory(to: sockaddr.self, capacity: 1)
-                return sendto(UDPSocket, broadcastMessage, broadcastMessageLength, 0, memory, socketLength)
+                return sendto(UDPSocket, broadcastMessage.baseAddress, broadcastMessageLength, 0, memory, socketLength)
             }
             
             guard sent > 0 else {
@@ -218,7 +218,7 @@ open class UDPBroadcastConnection {
                 // Success
                 debugPrint("UDP connection sent \(broadcastMessageLength) bytes")
             }
-        }
+        }        
     }
     
     /// Close the connection.
