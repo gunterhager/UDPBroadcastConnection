@@ -23,9 +23,12 @@ class ViewController: UIViewController {
         do {
             broadcastConnection = try UDPBroadcastConnection(
                 port: Config.Ports.broadcast,
-                handler: { [weak self] (ipAddress: String, port: Int, response: [UInt8]) -> Void in
+                handler: { [weak self] (ipAddress: String, port: Int, response: Data) -> Void in
                     guard let self = self else { return }
-                    self.log("Received from \(ipAddress):\(port):\n\n\(response)\n")
+                    let hexString = self.hexBytes(data: response)
+                    let utf8String = String(data: response, encoding: .utf8) ?? ""
+                    print("UDP connection received from \(ipAddress):\(port):\n\(hexString)\n\(utf8String)\n")
+                    self.log("Received from \(ipAddress):\(port):\n\(hexString)\n\(utf8String)\n")
                 },
                 errorHandler: { [weak self] (error) in
                     guard let self = self else { return }
@@ -34,6 +37,12 @@ class ViewController: UIViewController {
         } catch {
             log("Error: \(error)\n")
         }
+    }
+    
+    private func hexBytes(data: Data) -> String {
+        return data
+            .map { String($0, radix: 16, uppercase: true) }
+            .joined(separator: ", ")
     }
     
     
