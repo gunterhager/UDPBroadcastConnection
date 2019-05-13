@@ -13,6 +13,9 @@
 		6EB46ECB214183D0001C65D5 /* UDPBroadcastConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC87C7831C6B450400B940F5 /* UDPBroadcastConnection.swift */; };
 		6EB46ED621418407001C65D5 /* UDPBroadcast_watchOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EB46ED421418407001C65D5 /* UDPBroadcast_watchOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EB46EDA214185E5001C65D5 /* UDPBroadcastConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC87C7831C6B450400B940F5 /* UDPBroadcastConnection.swift */; };
+		BC15F25A22894CDD00DCEC9E /* UDPBroadcastConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC10B82248D428003AB7FB /* UDPBroadcastConnectionError.swift */; };
+		BC15F25B22894CDE00DCEC9E /* UDPBroadcastConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC10B82248D428003AB7FB /* UDPBroadcastConnectionError.swift */; };
+		BC15F25C22894CDE00DCEC9E /* UDPBroadcastConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFC10B82248D428003AB7FB /* UDPBroadcastConnectionError.swift */; };
 		BC87C7661C6B443A00B940F5 /* UDPBroadcast.h in Headers */ = {isa = PBXBuildFile; fileRef = BC87C7651C6B443A00B940F5 /* UDPBroadcast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC87C7741C6B448A00B940F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC87C7731C6B448A00B940F5 /* AppDelegate.swift */; };
 		BC87C7761C6B448A00B940F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC87C7751C6B448A00B940F5 /* ViewController.swift */; };
@@ -426,6 +429,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC15F25A22894CDD00DCEC9E /* UDPBroadcastConnectionError.swift in Sources */,
 				6EB46EB021418386001C65D5 /* UDPBroadcastConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,6 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC15F25B22894CDE00DCEC9E /* UDPBroadcastConnectionError.swift in Sources */,
 				6EB46ECB214183D0001C65D5 /* UDPBroadcastConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,6 +447,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC15F25C22894CDE00DCEC9E /* UDPBroadcastConnectionError.swift in Sources */,
 				6EB46EDA214185E5001C65D5 /* UDPBroadcastConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
