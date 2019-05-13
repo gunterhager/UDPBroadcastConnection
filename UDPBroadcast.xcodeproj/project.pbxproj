@@ -523,7 +523,7 @@
 				INFOPLIST_FILE = "UDPBroadcast tvOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "name.gunterhager.UDPBroadcast-tvOS";
 				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
@@ -556,7 +556,7 @@
 				INFOPLIST_FILE = "UDPBroadcast tvOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "name.gunterhager.UDPBroadcast-tvOS";
 				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
@@ -591,7 +591,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-macOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "name.gunterhager.UDPBroadcast-macOS";
 				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -625,7 +625,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-macOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "name.gunterhager.UDPBroadcast-macOS";
 				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -656,7 +656,7 @@
 				INFOPLIST_FILE = "UDPBroadcast watchOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-watchOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "name.gunterhager.UDPBroadcast-watchOS";
 				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -690,7 +690,7 @@
 				INFOPLIST_FILE = "UDPBroadcast watchOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "dkp.UDPBroadcast-watchOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "name.gunterhager.UDPBroadcast-watchOS";
 				PRODUCT_NAME = UDPBroadcast;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
