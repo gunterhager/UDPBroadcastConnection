@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Darwin
 
 public extension UDPBroadcastConnection {
     
@@ -15,6 +16,7 @@ public extension UDPBroadcastConnection {
         case createSocketFailed
         case enableBroadcastFailed
         case bindSocketFailed
+		case getEndpointFailed(socketAddress: sockaddr)
         
         // Sending message
         case messageEncodingFailed

@@ -32,10 +32,15 @@ class ViewController: UIViewController {
                 },
                 errorHandler: { [weak self] (error) in
                     guard let self = self else { return }
-                    self.log("Error: \(error)\n")
+					self.log(error: error)
             })
         } catch {
-            log("Error: \(error)\n")
+			if let connectionError = error as? UDPBroadcastConnection.ConnectionError {
+				log(error: connectionError)
+			}
+			else {
+				log("Error: \(error)\n")
+			}
         }
     }
     
@@ -52,12 +57,41 @@ class ViewController: UIViewController {
             try broadcastConnection.sendBroadcast(Config.Strings.broadcastMessage)
             log("Sent: '\(Config.Strings.broadcastMessage)'\n")
         } catch {
-            log("Error: \(error)\n")
+			if let connectionError = error as? UDPBroadcastConnection.ConnectionError {
+				log(error: connectionError)
+			}
+			else {
+				log("Error: \(error)\n")
+			}
         }
     }
     
     private func log(_ message: String) {
         self.logView.text += message
     }
-    
+
+	private func log(error: UDPBroadcastConnection.ConnectionError) {
+		switch error {
+		case .sendingMessageFailed(code: let code):
+			if let errorString = String(validatingUTF8: strerror(code)) {
+				log("Error: sendingMessageFailed: \(errorString)\n")
+			}
+			else {
+				log("Error: \(error)\n")
+			}
+		case .receiveFailed(code: let code):
+			if let errorString = String(validatingUTF8: strerror(code)) {
+				log("Error: receiveFailed: \(errorString)\n")
+			}
+			else {
+				log("Error: \(error)\n")
+			}
+		case .reopeningSocketFailed(error: let socketError):
+			log("Error: reopeningSocketFailed: \(socketError)\n")
+		case .underlying(error: let underlying):
+			log("Error: underlying: \(underlying)\n")
+		default:
+			log("Error: \(error)\n")
+		}
+	}
 }

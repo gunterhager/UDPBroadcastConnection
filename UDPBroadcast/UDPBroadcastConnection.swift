@@ -141,38 +141,6 @@ open class UDPBroadcastConnection {
         }
     }
     
-    // MARK: - Helper
-    
-    /// Convert a sockaddr structure into an IP address string and port.
-    ///
-    /// - Parameter socketAddressPointer: socketAddressPointer: Pointer to a socket address.
-    /// - Returns: Returns a tuple of the host IP address and the port in the socket address given.
-    func getEndpointFromSocketAddress(socketAddressPointer: UnsafePointer<sockaddr>) -> (host: String, port: Int)? {
-        let socketAddress = UnsafePointer<sockaddr>(socketAddressPointer).pointee
-        
-        switch Int32(socketAddress.sa_family) {
-        case AF_INET:
-            var socketAddressInet = UnsafeRawPointer(socketAddressPointer).load(as: sockaddr_in.self)
-            let length = Int(INET_ADDRSTRLEN) + 2
-            var buffer = [CChar](repeating: 0, count: length)
-            let hostCString = inet_ntop(AF_INET, &socketAddressInet.sin_addr, &buffer, socklen_t(length))
-            let port = Int(UInt16(socketAddressInet.sin_port).byteSwapped)
-            return (String(cString: hostCString!), port)
-            
-        case AF_INET6:
-            var socketAddressInet6 = UnsafeRawPointer(socketAddressPointer).load(as: sockaddr_in6.self)
-            let length = Int(INET6_ADDRSTRLEN) + 2
-            var buffer = [CChar](repeating: 0, count: length)
-            let hostCString = inet_ntop(AF_INET6, &socketAddressInet6.sin6_addr, &buffer, socklen_t(length))
-            let port = Int(UInt16(socketAddressInet6.sin6_port).byteSwapped)
-            return (String(cString: hostCString!), port)
-            
-        default:
-            return nil
-        }
-    }
-    
-    
     // MARK: - Private
 
 	/// Create a UDP socket for broadcasting and set up cancel and event handlers
@@ -238,7 +206,6 @@ open class UDPBroadcastConnection {
 
 			do {
 				guard bytesRead > 0 else {
-					self.closeConnection()
 					if bytesRead == 0 {
 						debugPrint("recvfrom returned EOF")
 						throw ConnectionError.receivedEndOfFile
@@ -250,11 +217,11 @@ open class UDPBroadcastConnection {
 					}
 				}
 
-				guard let endpoint = withUnsafePointer(to: &socketAddress, { self.getEndpointFromSocketAddress(socketAddressPointer: UnsafeRawPointer($0).bindMemory(to: sockaddr.self, capacity: 1)) })
-					else {
-						debugPrint("Failed to get the address and port from the socket address received from recvfrom")
-						self.closeConnection()
-						return
+				let endpoint = try withUnsafePointer(to: &socketAddress) {
+					try self.getEndpointFromSocketAddress(
+						socketAddressPointer: UnsafeRawPointer($0)
+							.bindMemory(to: sockaddr.self, capacity: 1)
+					)
 				}
 
 				debugPrint("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
@@ -264,6 +231,7 @@ open class UDPBroadcastConnection {
 				// Handle response
 				self.handler?(endpoint.host, endpoint.port, responseBytes)
 			} catch {
+				self.closeConnection()
 				if let error = error as? ConnectionError {
 					self.errorHandler?(error)
 				} else {
@@ -292,7 +260,38 @@ open class UDPBroadcastConnection {
     private class func ntohs(value: CUnsignedShort) -> CUnsignedShort {
         return (value << 8) + (value >> 8)
     }
-    
+
+	// MARK: - Helper
+
+	/// Convert a sockaddr structure into an IP address string and port.
+	///
+	/// - Parameter socketAddressPointer: socketAddressPointer: Pointer to a socket address.
+	/// - Returns: Returns a tuple of the host IP address and the port in the socket address given.
+	private func getEndpointFromSocketAddress(socketAddressPointer: UnsafePointer<sockaddr>) throws -> (host: String, port: Int) {
+		let socketAddress = UnsafePointer<sockaddr>(socketAddressPointer).pointee
+
+		switch Int32(socketAddress.sa_family) {
+		case AF_INET:
+			var socketAddressInet = UnsafeRawPointer(socketAddressPointer).load(as: sockaddr_in.self)
+			let length = Int(INET_ADDRSTRLEN) + 2
+			var buffer = [CChar](repeating: 0, count: length)
+			let hostCString = inet_ntop(AF_INET, &socketAddressInet.sin_addr, &buffer, socklen_t(length))
+			let port = Int(UInt16(socketAddressInet.sin_port).byteSwapped)
+			return (String(cString: hostCString!), port)
+
+		case AF_INET6:
+			var socketAddressInet6 = UnsafeRawPointer(socketAddressPointer).load(as: sockaddr_in6.self)
+			let length = Int(INET6_ADDRSTRLEN) + 2
+			var buffer = [CChar](repeating: 0, count: length)
+			let hostCString = inet_ntop(AF_INET6, &socketAddressInet6.sin6_addr, &buffer, socklen_t(length))
+			let port = Int(UInt16(socketAddressInet6.sin6_port).byteSwapped)
+			return (String(cString: hostCString!), port)
+
+		default:
+			throw ConnectionError.getEndpointFailed(socketAddress: socketAddress)
+		}
+	}
+
 }
 
 
