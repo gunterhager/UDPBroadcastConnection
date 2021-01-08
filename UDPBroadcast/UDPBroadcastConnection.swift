@@ -231,7 +231,7 @@ open class UDPBroadcastConnection {
 
 			debugPrint("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
 
-			let responseBytes = Data(response[0..<bytesRead])
+			let responseBytes = Data(bytes: &response, count: bytesRead)
 
 			// Handle response
 			self.handler?(endpoint.host, endpoint.port, responseBytes)
