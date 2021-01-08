@@ -98,13 +98,13 @@ open class UDPBroadcastConnection {
         }
         
         guard let source = responseSource else { return }
-        let UDPSocket = Int32(source.handle)
+        let socket = Int32(source.handle)
         let socketLength = socklen_t(address.sin_len)
         try data.withUnsafeBytes { (broadcastMessage) in
             let broadcastMessageLength = data.count
             let sent = withUnsafeMutablePointer(to: &address) { pointer -> Int in
                 let memory = UnsafeRawPointer(pointer).bindMemory(to: sockaddr.self, capacity: 1)
-                return sendto(UDPSocket, broadcastMessage.baseAddress, broadcastMessageLength, 0, memory, socketLength)
+                return sendto(socket, broadcastMessage.baseAddress, broadcastMessageLength, 0, memory, socketLength)
             }
             
             guard sent > 0 else {
@@ -181,37 +181,32 @@ open class UDPBroadcastConnection {
 
 		// Set up a dispatch source
 		let newResponseSource = DispatchSource.makeReadSource(fileDescriptor: newSocket, queue: dispatchQueue)
+		let socket = Int32(newResponseSource.handle)
 
 		// Set up cancel handler
-		let UDPSocket = Int32(newResponseSource.handle)
 		newResponseSource.setCancelHandler {
 			debugPrint("Closing UDP socket")
-			shutdown(UDPSocket, SHUT_RDWR)
-			close(UDPSocket)
+			shutdown(socket, SHUT_RDWR)
+			close(socket)
 		}
 
 		// Set up event handler (gets called when data arrives at the UDP socket)
 		newResponseSource.setEventHandler { [weak self] in
-			guard
-				let self = self,
-				let source = self.responseSource
-			else { return }
-			self.handleResponse(source: source)
+			self?.handleResponse(socket: socket)
 		}
 
 		newResponseSource.resume()
 		responseSource = newResponseSource
 	}
 
-	private func handleResponse(source: DispatchSourceRead) {
+	private func handleResponse(socket: Int32) {
 		var socketAddress = sockaddr_storage()
 		var socketAddressLength = socklen_t(MemoryLayout<sockaddr_storage>.size)
 		var response = [UInt8](repeating: 0, count: 4096)
-		let UDPSocket = Int32(source.handle)
 
 		let bytesRead = withUnsafeMutablePointer(to: &socketAddress) { pointer -> Int in
 			let socketPointer = UnsafeMutableRawPointer(pointer).assumingMemoryBound(to: sockaddr.self)
-			return recvfrom(UDPSocket, &response, response.count, 0, socketPointer, &socketAddressLength)
+			return recvfrom(socket, &response, response.count, 0, socketPointer, &socketAddressLength)
 		}
 
 		do {
