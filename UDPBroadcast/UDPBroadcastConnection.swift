@@ -165,9 +165,9 @@ open class UDPBroadcastConnection {
 		if shouldBeBound {
 			var saddr = sockaddr(sa_len: 0, sa_family: 0,
 								 sa_data: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-			self.address.sin_addr = INADDR_ANY
-			memcpy(&saddr, &self.address, MemoryLayout<sockaddr_in>.size)
-			self.address.sin_addr = INADDR_BROADCAST
+			address.sin_addr = INADDR_ANY
+			memcpy(&saddr, &address, MemoryLayout<sockaddr_in>.size)
+			address.sin_addr = INADDR_BROADCAST
 			let isBound = bind(newSocket, &saddr, socklen_t(MemoryLayout<sockaddr_in>.size))
 			if isBound == -1 {
 				debugPrint("Couldn't bind socket")
@@ -183,65 +183,71 @@ open class UDPBroadcastConnection {
 		let newResponseSource = DispatchSource.makeReadSource(fileDescriptor: newSocket, queue: dispatchQueue)
 
 		// Set up cancel handler
+		let UDPSocket = Int32(newResponseSource.handle)
 		newResponseSource.setCancelHandler {
 			debugPrint("Closing UDP socket")
-			let UDPSocket = Int32(newResponseSource.handle)
 			shutdown(UDPSocket, SHUT_RDWR)
 			close(UDPSocket)
 		}
 
 		// Set up event handler (gets called when data arrives at the UDP socket)
 		newResponseSource.setEventHandler { [weak self] in
-			guard let self = self else { return }
-			guard let source = self.responseSource else { return }
-
-			var socketAddress = sockaddr_storage()
-			var socketAddressLength = socklen_t(MemoryLayout<sockaddr_storage>.size)
-			let response = [UInt8](repeating: 0, count: 4096)
-			let UDPSocket = Int32(source.handle)
-
-			let bytesRead = withUnsafeMutablePointer(to: &socketAddress) {
-				recvfrom(UDPSocket, UnsafeMutableRawPointer(mutating: response), response.count, 0, UnsafeMutableRawPointer($0).bindMemory(to: sockaddr.self, capacity: 1), &socketAddressLength)
-			}
-
-			do {
-				guard bytesRead > 0 else {
-					if bytesRead == 0 {
-						debugPrint("recvfrom returned EOF")
-						throw ConnectionError.receivedEndOfFile
-					} else {
-						if let errorString = String(validatingUTF8: strerror(errno)) {
-							debugPrint("recvfrom failed: \(errorString)")
-						}
-						throw ConnectionError.receiveFailed(code: errno)
-					}
-				}
-
-				let endpoint = try withUnsafePointer(to: &socketAddress) {
-					try self.getEndpointFromSocketAddress(
-						socketAddressPointer: UnsafeRawPointer($0)
-							.bindMemory(to: sockaddr.self, capacity: 1)
-					)
-				}
-
-				debugPrint("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
-
-				let responseBytes = Data(response[0..<bytesRead])
-
-				// Handle response
-				self.handler?(endpoint.host, endpoint.port, responseBytes)
-			} catch {
-				self.closeConnection()
-				if let error = error as? ConnectionError {
-					self.errorHandler?(error)
-				} else {
-					self.errorHandler?(ConnectionError.underlying(error: error))
-				}
-			}
+			guard
+				let self = self,
+				let source = self.responseSource
+			else { return }
+			self.handleResponse(source: source)
 		}
 
 		newResponseSource.resume()
 		responseSource = newResponseSource
+	}
+
+	private func handleResponse(source: DispatchSourceRead) {
+		var socketAddress = sockaddr_storage()
+		var socketAddressLength = socklen_t(MemoryLayout<sockaddr_storage>.size)
+		var response = [UInt8](repeating: 0, count: 4096)
+		let UDPSocket = Int32(source.handle)
+
+		let bytesRead = withUnsafeMutablePointer(to: &socketAddress) { pointer -> Int in
+			let socketPointer = UnsafeMutableRawPointer(pointer).assumingMemoryBound(to: sockaddr.self)
+			return recvfrom(UDPSocket, &response, response.count, 0, socketPointer, &socketAddressLength)
+		}
+
+		do {
+			guard bytesRead > 0 else {
+				if bytesRead == 0 {
+					debugPrint("recvfrom returned EOF")
+					throw ConnectionError.receivedEndOfFile
+				} else {
+					if let errorString = String(validatingUTF8: strerror(errno)) {
+						debugPrint("recvfrom failed: \(errorString)")
+					}
+					throw ConnectionError.receiveFailed(code: errno)
+				}
+			}
+
+			let endpoint = try withUnsafePointer(to: &socketAddress) {
+				try self.getEndpointFromSocketAddress(
+					socketAddressPointer: UnsafeRawPointer($0)
+						.bindMemory(to: sockaddr.self, capacity: 1)
+				)
+			}
+
+			debugPrint("UDP connection received \(bytesRead) bytes from \(endpoint.host):\(endpoint.port)")
+
+			let responseBytes = Data(response[0..<bytesRead])
+
+			// Handle response
+			self.handler?(endpoint.host, endpoint.port, responseBytes)
+		} catch {
+			self.closeConnection()
+			if let error = error as? ConnectionError {
+				self.errorHandler?(error)
+			} else {
+				self.errorHandler?(ConnectionError.underlying(error: error))
+			}
+		}
 	}
 
     /// Prevents crashes when blocking calls are pending and the app is paused (via Home button).
